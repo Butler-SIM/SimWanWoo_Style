@@ -1,0 +1,42 @@
+version: "3.7"
+
+services:
+  app:
+    container_name: sww-api-app
+    restart: always
+    build: .
+    # command: gunicorn config.wsgi --env DJANGO_SETTINGS_MODULE=config.settings --bind 0.0.0.0:8000
+    command: tail -f /dev/null
+    env_file: local.env
+    volumes:
+      - .:/app
+
+  # RabbitMQ Local용
+#  rabbitmq:
+#    container_name: rabbitmq_service
+#    image: rabbitmq:3.7.14-management-alpine # 웹 UI management 툴 포함
+#    # 환경변수 설정
+#    environment:
+#      - RABBITMQ_USER=guest
+#      - RABBITMQ_PASSWORD=guest
+#    ports:
+#      - 5672:5672
+#      - 15672:15672
+#  docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 --restart=unless-stopped rabbitmq:management
+  # Celery Local용
+  celery:
+    container_name: sww-celery
+    restart: always
+    build: .
+    command: celery -A config  worker -l info
+    env_file: local.env
+    volumes:
+      - .:/app
+  nginx:
+    container_name: sww-api-nginx
+    restart: always
+    build: ./nginx/local
+    ports:
+      - 1337:80
+    depends_on:
+      - app

@@ -28,12 +28,12 @@ class KakaoLogin(CustomSocialLoginView):
     client_class = OAuth2Client
 
 
-@SocialSchema.google_schema_view
-class GoogleLogin(CustomSocialLoginView):
-    """구글 로그인, 회원가입 Access_Token 필요"""
-
-    adapter_class = GoogleOAuth2Adapter
-    client_class = OAuth2Client
+# @SocialSchema.google_schema_view
+# class GoogleLogin(CustomSocialLoginView):
+#     """구글 로그인, 회원가입 Access_Token 필요"""
+#
+#     adapter_class = GoogleOAuth2Adapter
+#     client_class = OAuth2Client
 
 
 # https://accounts.google.com/o/oauth2/v2/auth?
@@ -52,11 +52,11 @@ class GoogleLogin(CustomSocialLoginView):
 # scope=https://www.googleapis.com/auth/userinfo.email
 
 
-@SocialSchema.apple_schema_view
-class AppleLogin(CustomSocialLoginView):
-    """애플 로그인, 회원가입 Access_Token, id_token 필요"""
-
-    adapter_class = AppleOAuth2Adapter
-    client_class = AppleOAuth2Client
-    # Services IDs에서 설정한 return url 과 같아야함(https만 가능)
-    callback_url = APPLE_RETURN_URL
+# @SocialSchema.apple_schema_view
+# class AppleLogin(CustomSocialLoginView):
+#     """애플 로그인, 회원가입 Access_Token, id_token 필요"""
+#
+#     adapter_class = AppleOAuth2Adapter
+#     client_class = AppleOAuth2Client
+#     # Services IDs에서 설정한 return url 과 같아야함(https만 가능)
+#     callback_url = APPLE_RETURN_URL

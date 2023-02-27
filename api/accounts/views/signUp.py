@@ -14,7 +14,6 @@ from api.accounts.schemas import SignUpSchema
 from common.validation import CustomPasswordValidator
 
 
-
 @SignUpSchema.signUp_schema
 class CustomRegisterView(RegisterView):
     """회원 가입"""
@@ -30,23 +29,8 @@ class CustomRegisterView(RegisterView):
                 validation_result[1],
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = self.perform_create(serializer)
-        user.save()
-        headers = self.get_success_headers(serializer.data)
-        data = self.get_response_data(user)
 
-        if data:
-            response = Response(
-                data,
-                status=status.HTTP_201_CREATED,
-                headers=headers,
-            )
-        else:
-            response = Response(status=status.HTTP_204_NO_CONTENT, headers=headers)
-
-        return response
+        return super().create(request, *args, **kwargs)
 
 
 @NickNameSchema.nickname_validation_schema

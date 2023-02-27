@@ -1,7 +1,6 @@
 from rest_framework import serializers, status
 from rest_framework.exceptions import ValidationError
 from api.accounts.models import User
-from common.aws import s3_move_temp_file, get_s3_obj_list
 from common.validation import NickNameValidator
 
 
@@ -10,7 +9,6 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             "id",
-            "marketing_check",
             "date_joined",
             "nickname",
             "profile_image",
@@ -29,8 +27,8 @@ class UserSerializer(serializers.ModelSerializer):
         return nickname
 
 
-class UserProfileImageSerializer(serializers.ModelSerializer):
-    profile_image = serializers.CharField(required=True)
+class CommentUserProfileImageSerializer(serializers.ModelSerializer):
+    profile_image = serializers.FileField(read_only=True)
 
     class Meta:
         model = User
@@ -39,23 +37,3 @@ class UserProfileImageSerializer(serializers.ModelSerializer):
             "nickname",
             "profile_image",
         ]
-
-    def update(self, instance, validated_data):
-        profile_image = validated_data["profile_image"]
-        folder = self.context["profile_folder"]
-
-        if profile_image not in get_s3_obj_list():
-            raise ValidationError("There is no key in the bucket.")
-
-        result, key = s3_move_temp_file(profile_image, folder)
-        if not result:
-            raise ValidationError("upload fail")
-
-        instance.profile_image = key
-        instance.save()
-
-        return instance
-
-
-class KeySerializer(serializers.Serializer):
-    key = serializers.CharField(required=True)

@@ -2,6 +2,7 @@ from dj_rest_auth.registration.serializers import RegisterSerializer
 from rest_framework import serializers
 from datetime import datetime, timedelta
 from django.utils.translation import gettext_lazy as _
+
 from api.emails.models import VerificationEmail
 
 

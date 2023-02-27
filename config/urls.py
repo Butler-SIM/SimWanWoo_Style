@@ -14,8 +14,36 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+import os
+from django.urls import path, include
+from drf_spectacular.views import (
+    SpectacularJSONAPIView,
+    SpectacularSwaggerView,
+    SpectacularRedocView,
+    SpectacularYAMLAPIView,
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("v1/", include("api.urls")),
 ]
+
+
+if os.environ.get("DEBUG") != "0" or not os.environ.get("DEBUG"):
+
+    urlpatterns += [
+        # Open API 자체를 조회 : json, yaml,
+        path("json/", SpectacularJSONAPIView.as_view(), name="schema-json"),
+        path("yaml/", SpectacularYAMLAPIView.as_view(), name="swagger-yaml"),
+        # Open API Document UI로 조회: Swagger, Redoc
+        path(
+            "swagger/",
+            SpectacularSwaggerView.as_view(url_name="schema-json"),
+            name="swagger-ui",
+        ),
+        path(
+            "redoc/",
+            SpectacularRedocView.as_view(url_name="schema-json"),
+            name="redoc",
+        ),
+    ]
