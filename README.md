@@ -7,7 +7,10 @@
 dj-rest-auth를 사용한 회원가입, 로그인 api\
 celery + rabbitMQ를 사용한 비동기 email발송 api\
 기본 적인 게시판 api\
-댓글, 대댓글 api 기능이 있으며
+댓글, 대댓글 api 
+
+어렵지않은 기능이므로 코드 퀄리티를 높이기 위해 노력했습니다\
+models, url, serializers, views, test 둘러봐 주시면 감사하겠습니다
 
 문서화를 위한 Django swagger drf-spectacular를 사용하였습니다\
 ex docs img)

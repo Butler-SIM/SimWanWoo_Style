@@ -4,5 +4,3 @@ from rest_framework import serializers
 
 class CustomJWTSerializer(JWTSerializer):
     """Custom JWT Serializer"""
-
-    clayful = serializers.DictField()
